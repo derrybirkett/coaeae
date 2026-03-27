@@ -1,0 +1,75 @@
+---
+title: "Building a Development Moleskine with Claude Code"
+publishedAt: "2026-03-27"
+summary: "How I turned a passive prefs file into a self-improving Claude Code skills repo — and what I learned about when not to add structure."
+---
+
+## My AI config was documentation. I turned it into a system that teaches itself.
+
+I had a `prefs.yaml` in a GitHub repo. It described my stack — Next.js, Supabase, Stripe, shadcn, Vercel. Completely useless unless I remembered to paste it in. Claude didn't read it automatically. It was a note to myself dressed up as config.
+
+So I rebuilt it properly. Here's what I ended up with and what tripped me up along the way.
+
+## The problem with passive preferences
+
+A preference in a notes file is one Claude applies when asked. That's not a preference — that's a reminder. I wanted Claude to apply my conventions automatically, every session, without me having to say anything.
+
+The fix: `CLAUDE.md`. It loads every session. Anything in there is operative. So I encode everything twice — a short block in `CLAUDE.md` (always-on, drives passive decisions) and full detail in `notes/prefs.md` (for when you need the reasoning). The CLAUDE.md block is the one that actually matters.
+
+Sounds obvious in hindsight. Took me most of the morning to land on it.
+
+## What I built
+
+A skills repo at `~/Projects/skills/` with a symlink at `~/.claude/skills` so Claude Code discovers it globally. Every project I open gets the full library automatically.
+
+Two layers:
+
+- **Skills** — single-purpose tools. `spec-first`, `lean-review`, `wrap-up`, `note-that`.
+- **Agents** — opinionated personas that orchestrate a domain. `developer-agent`, `designer-agent`, `writer-agent`.
+
+Agents live in `agents/` for clarity but are symlinked into `skills/` for discoverability. Claude Code's skill discovery is one level deep, so the chain is `~/.claude/skills/developer-agent` → `skills/developer-agent` → `../agents/developer-agent`. A bit fiddly but it works — and the physical structure makes the two-layer model readable at a glance.
+
+The rest of it:
+- Post-commit hook that logs every commit across every repo into `notes/activity-log.md`
+- `notes/insights.md` for capturing non-obvious observations mid-session
+- ADRs in `notes/decisions/` for anything I might want to revisit
+- A `weekly-review` skill that reads the week's activity and updates the skills plan
+- A `wrap-up` skill that commits, semver tags, writes a learning note, and pushes
+
+## The thing I almost built that I didn't need
+
+Halfway through I designed a tagging taxonomy. Nine tags across two dimensions — domain and project. I had a whole governance model for it. `notes/tags.md` was going to be a thing.
+
+Then I counted my notes. Twenty. Nobody has a retrieval problem with twenty notes.
+
+Tags solve "I know I wrote something about X but I can't find it." I hadn't said that yet. So I put the taxonomy design in `friction.md` under "build when you first feel this" and moved on. It's there when I need it. Right now I don't.
+
+Premature structure is the PKM version of premature optimisation. Exact same trap.
+
+## The loop that makes it self-improving
+
+```
+commit → activity-log (automatic)
+             ↓
+ inbox + friction (during the week)
+             ↓
+ weekly-review (Friday)
+             ↓
+ skills-plan updated → new skill built
+             ↓
+ every 4th review: skill audit → prune unused skills
+             ↓
+          repeat
+```
+
+The skill audit is the bit I'm most curious about. Every fourth weekly review it counts how many times each skill got mentioned across the last four reviews. Zero mentions means it's a candidate to prune. Either it gets used and earns its place, or it rots and gets cut. Either outcome is useful signal.
+
+## What I'd do differently
+
+Write `CLAUDE.md` first. Everything else — the skills, the structure, the symlink — flows from having that container right. I built skills before I sorted the container and had to redo some of it. Start with what loads every session.
+
+## What's next
+
+The last piece is the `writer-agent` — it reads from `notes/` and drafts blog posts, then eventually opens a PR in my blog repo via GitHub MCP. Phase 1 (draft locally) is working. Phase 2 (publish) is waiting on the blog repo being ready.
+
+Which is what this post is. Phase 1 in action.
