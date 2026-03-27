@@ -1,31 +1,25 @@
 {
-  "name": "next-contentlayer",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "preview": "next build && next start",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
-    "@tailwindcss/typography": "^0.5.9",
-    "@types/node": "18.16.1",
-    "@types/react": "18.2.0",
-    "@types/react-dom": "18.2.1",
-    "@vercel/analytics": "^1.0.0",
-    "autoprefixer": "10.4.14",
-    "contentlayer": "^0.3.2",
-    "eslint": "8.39.0",
-    "eslint-config-next": "13.3.1",
-    "next": "13.4.1",
-    "next-contentlayer": "^0.3.2",
-    "next-themes": "^0.2.1",
-    "postcss": "8.4.23",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "tailwindcss": "3.3.2",
-    "typescript": "5.0.4"
+    "@tailwindcss/postcss": "4.0.0-alpha.13",
+    "@types/node": "20.11.17",
+    "@types/react": "18.2.55",
+    "@types/react-dom": "18.2.19",
+    "@vercel/analytics": "^1.1.3",
+    "@vercel/speed-insights": "^1.0.9",
+    "geist": "1.2.2",
+    "next": "^16.0.10",
+    "next-mdx-remote": "^4.4.1",
+    "postcss": "^8.4.35",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
+    "sugar-high": "^0.6.0",
+    "tailwindcss": "4.0.0-alpha.13",
+    "typescript": "^5"
   }
 }

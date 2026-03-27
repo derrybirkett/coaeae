@@ -1,19 +1,21 @@
-import { allPosts } from "@/.contentlayer/generated"
-import Link from "next/link"
+import { BlogPosts } from 'app/components/posts'
 
-export default function Home() {
+export default function Page() {
   return (
-    <div className="prose dark:prose-invert">
-      <h1 className="mb-1">Confessions of an English API Eater</h1>
-      <p className="mt-0 text-slate-500 dark:text-slate-400">by Derry Birkett</p>
-      {allPosts.map((post) => (
-        <article key={post._id}>
-          <Link href={post.slug}>
-            <h2>{post.title}</h2>
-          </Link>
-          {post.description && <p>{post.description}</p>}
-        </article>
-      ))}
-    </div>
+    <section>
+      <h1 className="mb-8 text-2xl font-semibold tracking-tighter">
+        My Portfolio
+      </h1>
+      <p className="mb-4">
+        {`I'm a Vim enthusiast and tab advocate, finding unmatched efficiency in
+        Vim's keystroke commands and tabs' flexibility for personal viewing
+        preferences. This extends to my support for static typing, where its
+        early error detection ensures cleaner code, and my preference for dark
+        mode, which eases long coding sessions by reducing eye strain.`}
+      </p>
+      <div className="my-8">
+        <BlogPosts />
+      </div>
+    </section>
   )
 }
